@@ -106,5 +106,5 @@ MonoBehaviour:
   damageMultiplier: 1
   canUseSkill: 0
   characterName: Tetangga
-  maxHP: 100
+  maxHP: 120
   currentHP: 0

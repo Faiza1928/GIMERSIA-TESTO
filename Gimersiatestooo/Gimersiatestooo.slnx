@@ -1,4 +1,4 @@
 ﻿<Solution>
-  <Project Path="ExportProjectToZip.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="ExportProjectToZip.csproj" />
 </Solution>

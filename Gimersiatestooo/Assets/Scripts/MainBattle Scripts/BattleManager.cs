@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -166,7 +167,7 @@ public class BattleManager : MonoBehaviour
         SetBattleView(false); // ganti ke enemy view
 
         if (debuffManager != null)
-        debuffManager.OnEnemyTurnStart(enemy);
+            debuffManager.OnEnemyTurnStart(enemy);
 
         if (enemy.IsAlive)
             StartCoroutine(PerformEnemyAttack());
@@ -240,10 +241,7 @@ public class BattleManager : MonoBehaviour
         enemyHPBar.maxValue = enemy.maxHP;
 
         // Cek kematian
-        if (!target.IsAlive)
-        {
-            Debug.Log($"{target.characterName} has been defeated!");
-        }
+        CheckBattleEnd();
     }
 
 
@@ -311,7 +309,7 @@ public class BattleManager : MonoBehaviour
         enemyHPVisual = enemy.currentHP;
     }
 
-        // === SKILL 2: Heal + Attack ===
+    // === SKILL 2: Heal + Attack ===
     public void UseSkill2()
     {
         if (!playerTurn)
@@ -353,7 +351,7 @@ public class BattleManager : MonoBehaviour
         Invoke(nameof(EnemyTurn), 1.0f);
     }
 
-        // === SKILL 3: Ultimate Attack ===
+    // === SKILL 3: Ultimate Attack ===
     public void UseUltimate()
     {
         if (!playerTurn)
@@ -390,7 +388,7 @@ public class BattleManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
 
-            // ✅ HIDE overlay sebelum lanjut ke Pose 2-4
+        // ✅ HIDE overlay sebelum lanjut ke Pose 2-4
         if (ultimateOverlay != null)
             ultimateOverlay.SetActive(false);
 
@@ -428,5 +426,33 @@ public class BattleManager : MonoBehaviour
         Invoke(nameof(EnemyTurn), 1.0f);
     }
 
+    // === WIN/LOSE LOGIC ===
+    void CheckBattleEnd()
+    {
+        if (!player.IsAlive)
+        {
+            Debug.Log("💀 PLAYER KALAH!");
+            PlayerLose();
+        }
+        else if (!enemy.IsAlive)
+        {
+            Debug.Log("🎉 PLAYER MENANG!");
+            PlayerWin();
+        }
+    }
+
+    void PlayerWin()
+    {
+        // Tampilkan UI Win atau pindah scene
+        Debug.Log("Loading Win Scene...");
+        // SceneManager.LoadScene("WinScene"); // uncomment nanti
+    }
+
+    void PlayerLose()
+    {
+        // Tampilkan UI Lose atau pindah scene
+        Debug.Log("Loading Lose Scene...");
+        // SceneManager.LoadScene("LoseScene"); // uncomment nanti
+    }
 
 }
