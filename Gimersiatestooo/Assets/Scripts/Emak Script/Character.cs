@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    public float damageMultiplier = 1f;
+    public bool canUseSkill = true;
+
     [Header("Character Stats")]
     public string characterName = "Unnamed";
     public int maxHP = 100;

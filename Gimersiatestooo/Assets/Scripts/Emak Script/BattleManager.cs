@@ -6,6 +6,11 @@ using UnityEngine.UI;
 public class BattleManager : MonoBehaviour
 {
 
+    [Header("Items")]
+    public ItemManager itemManager;
+    private int turnCount = 1;
+
+
     [Header("Extra Prefabs")]
     public GameObject tanteWajanPrefab;
 
@@ -134,6 +139,8 @@ public class BattleManager : MonoBehaviour
         if (enemy.IsAlive)
             StartCoroutine(PerformEnemyAttack());
 
+        turnCount++;
+        itemManager.CheckSpawnItems(turnCount);
         // Balik lagi ke player turn setelah delay
         //Invoke(nameof(ReturnToPlayerTurn), 1.5f);
     }
@@ -143,6 +150,9 @@ public class BattleManager : MonoBehaviour
     {
         playerTurn = true;
         SetBattleView(true);
+
+        turnCount++;
+        itemManager.CheckSpawnItems(turnCount);
     }
 
     // === GANTI VIEW DAN UI ===
@@ -173,7 +183,8 @@ public class BattleManager : MonoBehaviour
     // === LOGIKA SERANG ===
     void Attack(Character attacker, Character target)
     {
-        int damage = Random.Range(10, 20);
+        int baseDamage = Random.Range(10, 20);
+        int damage = Mathf.RoundToInt(baseDamage * attacker.damageMultiplier);
         target.TakeDamage(damage);
         Debug.Log($"{attacker.characterName} attacks {target.characterName} for {damage} damage!");
 
