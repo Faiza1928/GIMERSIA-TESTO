@@ -6,6 +6,10 @@ using UnityEngine.UI;
 public class BattleManager : MonoBehaviour
 {
 
+    [Header("Status Effects")]
+    public DebuffManager debuffManager;
+
+
     [Header("Items")]
     public ItemManager itemManager;
     private int turnCount = 1;
@@ -13,15 +17,24 @@ public class BattleManager : MonoBehaviour
 
     [Header("Extra Prefabs")]
     public GameObject tanteWajanPrefab;
+    public GameObject objekKiriPrefab;
 
     [Header("Player Sprites")]
     public Sprite emakIdle;
     public Sprite emakAttack;
+    public Sprite emakSkill2Pose;
 
-    [Header("Enemy Sprites")]
+    [Header("Ultimate Sprites (4 pose)")]
+    public Sprite emakUltiPose1;
+    public Sprite emakUltiPose2;
+    public Sprite emakUltiPose3;
+    public Sprite emakUltiPose4;
+
+    [Header("Enemy Sprites EnemyTurn")]
     public Sprite tetanggaIdle;
     public Sprite tetanggaAttack;
 
+    private Vector3 enemyOriginalPosition;
     //[Header("Enemy Pose Settings")]
     //public Vector3 enemyAttackScale = new Vector3(1.2f, 1.2f, 1f);
     //public Vector3 enemyAttackOffset = new Vector3(-0.3f, 0f, 0f);
@@ -51,6 +64,8 @@ public class BattleManager : MonoBehaviour
     private SpriteRenderer enemySprite;
 
     private GameObject tanteWajanInstance;
+    private GameObject objekKiriInstance;
+
 
 
     private float playerHPVisual;
@@ -74,10 +89,20 @@ public class BattleManager : MonoBehaviour
         playerSprite = player.GetComponent<SpriteRenderer>(); // ambil sprite renderer Emak
         enemySprite = enemy.GetComponent<SpriteRenderer>();
 
+        // SIMPAN posisi asli enemy sekali di sini
+        enemy.transform.position += new Vector3(8f, -1f, 0f);
+        enemyOriginalPosition = enemy.transform.position;
+
         if (tanteWajanPrefab != null)
         {
             tanteWajanInstance = Instantiate(tanteWajanPrefab);
             tanteWajanInstance.SetActive(true);
+        }
+
+        if (objekKiriPrefab != null)
+        {
+            objekKiriInstance = Instantiate(objekKiriPrefab);
+            objekKiriInstance.SetActive(false); // HIDE dulu di awal (player turn)
         }
 
 
@@ -136,6 +161,9 @@ public class BattleManager : MonoBehaviour
     {
         SetBattleView(false); // ganti ke enemy view
 
+        if (debuffManager != null)
+        debuffManager.OnEnemyTurnStart(enemy);
+
         if (enemy.IsAlive)
             StartCoroutine(PerformEnemyAttack());
 
@@ -148,6 +176,9 @@ public class BattleManager : MonoBehaviour
     // === KEMBALI KE PLAYER TURN ===
     void ReturnToPlayerTurn()
     {
+        if (debuffManager != null)
+            debuffManager.OnEnemyTurnEnd(enemy);
+
         playerTurn = true;
         SetBattleView(true);
 
@@ -171,6 +202,10 @@ public class BattleManager : MonoBehaviour
         if (tanteWajanInstance != null)
             tanteWajanInstance.SetActive(playerTurn);
 
+        // Objek Kiri: muncul saat ENEMY turn
+        if (objekKiriInstance != null)
+            objekKiriInstance.SetActive(!playerTurn); // ← kebalikan dari playerTurn
+
         // Hide or show Canvas_ParallaxUI (Skill, Item, dsb)
         if (parallaxUI != null)
         {
@@ -183,20 +218,30 @@ public class BattleManager : MonoBehaviour
     // === LOGIKA SERANG ===
     void Attack(Character attacker, Character target)
     {
-        int baseDamage = Random.Range(10, 20);
-        int damage = Mathf.RoundToInt(baseDamage * attacker.damageMultiplier);
-        target.TakeDamage(damage);
-        Debug.Log($"{attacker.characterName} attacks {target.characterName} for {damage} damage!");
+        // Hitung damage dasar
+        int baseDamage = 9;
+
+        // Terapkan multiplier (misalnya 0.5 untuk sandal, 0 untuk sapu)
+        float multiplier = Mathf.Clamp(attacker.damageMultiplier, 0f, 10f);
+        int finalDamage = Mathf.RoundToInt(baseDamage * multiplier);
+
+        // Terapkan damage ke target
+        target.TakeDamage(finalDamage);
+
+        // Log informasi jelas
+        Debug.Log($"{attacker.characterName} menyerang {target.characterName} dengan base {baseDamage} → final {finalDamage} (x{multiplier})");
 
         // Update bar batas max HP
         playerHPBar.maxValue = player.maxHP;
         enemyHPBar.maxValue = enemy.maxHP;
 
+        // Cek kematian
         if (!target.IsAlive)
         {
             Debug.Log($"{target.characterName} has been defeated!");
         }
     }
+
 
     // === Ganti Sprite pas Menyerang ===
     private IEnumerator PerformPlayerAttack()
@@ -222,9 +267,14 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator PerformEnemyAttack()
     {
+        // Pakai posisi yang sudah disimpan, bukan ambil dari transform sekarang
+        //Vector3 attackPos = enemyOriginalPosition + new Vector3(6f, -1f, 0f);
+
         if (enemySprite != null && tetanggaAttack != null)
         {
             enemySprite.sprite = tetanggaAttack;
+            //enemy.transform.position = attackPos; // geser ke kanan
+
         }
 
         yield return new WaitForSeconds(0.6f);
@@ -234,6 +284,7 @@ public class BattleManager : MonoBehaviour
         if (enemySprite != null && tetanggaIdle != null)
         {
             enemySprite.sprite = tetanggaIdle;
+            enemy.transform.position = enemyOriginalPosition; // balik ke posisi asli
         }
 
         Invoke(nameof(ReturnToPlayerTurn), 1.0f);
@@ -278,21 +329,18 @@ public class BattleManager : MonoBehaviour
     {
         chakraManager.UseChakra(1); // kurangi chakra
 
-        // ubah sprite player ke pose attack
-        if (playerSprite != null && emakAttack != null)
-            playerSprite.sprite = emakAttack;
 
         Debug.Log("Skill 2 aktif: Emak menyembuhkan diri dan menyerang!");
+        // ubah sprite player ke pose attack
+        if (playerSprite != null && emakSkill2Pose != null)
+            playerSprite.sprite = emakSkill2Pose;
 
         // heal dulu
-        player.Heal(20); // misal heal 20 HP
-        yield return new WaitForSeconds(0.4f);
-
-        // serang musuh
+        player.Heal(9); // misal heal 20 HP
+        yield return new WaitForSeconds(0.3f);
         Attack(player, enemy);
+        yield return new WaitForSeconds(0.3f);
 
-        // kembali ke idle pose
-        yield return new WaitForSeconds(0.5f);
         if (playerSprite != null && emakIdle != null)
             playerSprite.sprite = emakIdle;
 
@@ -300,5 +348,73 @@ public class BattleManager : MonoBehaviour
         playerTurn = false;
         Invoke(nameof(EnemyTurn), 1.0f);
     }
+
+        // === SKILL 3: Ultimate Attack ===
+    public void UseUltimate()
+    {
+        if (!playerTurn)
+        {
+            Debug.Log("Bukan giliran player!");
+            return;
+        }
+
+        if (!chakraManager.HasEnoughChakra(3))
+        {
+            Debug.Log("Chakra tidak cukup untuk Ultimate!");
+            return;
+        }
+
+        StartCoroutine(PerformUltimate());
+    }
+
+    private IEnumerator PerformUltimate()
+    {
+        chakraManager.UseChakra(3); // pakai 3 bar chakra
+
+        // Ubah sprite ke pose serang
+        if (playerSprite != null && emakAttack != null)
+            playerSprite.sprite = emakAttack;
+
+        Debug.Log("🔥 ULTI AKTIF! Emak mengeluarkan jurus pamungkas!");
+
+        //Pose 1
+        if (playerSprite != null && emakUltiPose1 != null)
+            playerSprite.sprite = emakUltiPose1;
+        yield return new WaitForSeconds(0.6f);
+
+        // Pose 2
+        if (playerSprite != null && emakUltiPose2 != null)
+            playerSprite.sprite = emakUltiPose2;
+        yield return new WaitForSeconds(0.4f);
+
+        // Pose 3
+        if (playerSprite != null && emakUltiPose3 != null)
+            playerSprite.sprite = emakUltiPose3;
+        yield return new WaitForSeconds(0.4f);
+
+        // Pose 4 (serangan!)
+        if (playerSprite != null && emakUltiPose4 != null)
+            playerSprite.sprite = emakUltiPose4;
+        yield return new WaitForSeconds(0.4f);
+
+        // Serangan besar (damage tetap 15)
+        int ultiDamage = 15;
+        float multiplier = Mathf.Clamp(player.damageMultiplier, 0f, 10f);
+        int finalDamage = Mathf.RoundToInt(ultiDamage * multiplier);
+
+        enemy.TakeDamage(finalDamage);
+
+        Debug.Log($"{player.characterName} menggunakan ULTIMATE! Base {ultiDamage} → Final {finalDamage}");
+
+        yield return new WaitForSeconds(0.5f);
+
+        // Balik ke pose idle
+        if (playerSprite != null && emakIdle != null)
+            playerSprite.sprite = emakIdle;
+
+        playerTurn = false;
+        Invoke(nameof(EnemyTurn), 1.0f);
+    }
+
 
 }

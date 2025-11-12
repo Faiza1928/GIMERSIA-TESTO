@@ -79,23 +79,26 @@ public class DraggableItem : MonoBehaviour
 
     void ApplyItemEffect()
     {
-        if (battleManager == null)
+        var debuffManager = Object.FindFirstObjectByType<DebuffManager>();
+        if (debuffManager == null)
         {
-            Debug.LogWarning("BattleManager tidak ditemukan!");
+            Debug.LogWarning("DebuffManager tidak ditemukan di scene!");
             return;
         }
 
-        // cek nama prefab
         string lowerName = name.ToLower();
         if (lowerName.Contains("sandal"))
         {
-            battleManager.StartCoroutine(SandalDebuff());
+            debuffManager.QueueDebuff(DebuffType.Sandal);
         }
         else if (lowerName.Contains("sapu"))
         {
-            battleManager.StartCoroutine(SapuDebuff());
+            debuffManager.QueueDebuff(DebuffType.SapuLidi);
         }
+
+        Debug.Log($"Item {name} digunakan — efek akan aktif di turn musuh berikutnya!");
     }
+
 
     IEnumerator SandalDebuff()
     {

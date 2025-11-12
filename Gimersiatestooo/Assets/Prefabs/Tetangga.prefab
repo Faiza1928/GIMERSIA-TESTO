@@ -103,6 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44051d081821b9f4283426073b8cdb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Character
+  damageMultiplier: 1
+  canUseSkill: 0
   characterName: Tetangga
-  maxHP: 120
+  maxHP: 100
   currentHP: 0
