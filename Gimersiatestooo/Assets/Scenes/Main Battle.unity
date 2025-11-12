@@ -1355,6 +1355,7 @@ GameObject:
   - component: {fileID: 819201943}
   - component: {fileID: 819201942}
   - component: {fileID: 819201944}
+  - component: {fileID: 819201945}
   m_Layer: 5
   m_Name: Skill 2
   m_TagString: Untagged
@@ -1463,6 +1464,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &819201945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819201940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e13f32725bad474d821ba40f89dfc2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Skill2Button
+  button: {fileID: 819201944}
+  battleManager: {fileID: 1835720352}
 --- !u!1 &852062345
 GameObject:
   m_ObjectHideFlags: 0
@@ -2066,6 +2081,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 256498500}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1359601157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1359601159}
+  - component: {fileID: 1359601158}
+  m_Layer: 0
+  m_Name: ChakraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1359601158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359601157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 739a8979cc187834d8738588863cc744, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChakraManager
+  chakra: 0
+  maxChakra: 3
+  chakraBars:
+  - {fileID: 7063583}
+  - {fileID: 3291810}
+  - {fileID: 410084906}
+--- !u!4 &1359601159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359601157}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.82867, y: -0.98081, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1363651296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2601,6 +2666,7 @@ MonoBehaviour:
   enemyHPBar: {fileID: 246705580}
   enemyHPText: {fileID: 1363651298}
   hpLerpSpeed: 5
+  chakraManager: {fileID: 1359601158}
 --- !u!4 &1835720353
 Transform:
   m_ObjectHideFlags: 0
@@ -3089,3 +3155,4 @@ SceneRoots:
   - {fileID: 256498500}
   - {fileID: 139847603}
   - {fileID: 934477223}
+  - {fileID: 1359601159}

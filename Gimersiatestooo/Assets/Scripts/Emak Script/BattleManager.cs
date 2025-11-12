@@ -50,7 +50,11 @@ public class BattleManager : MonoBehaviour
 
     private float playerHPVisual;
     private float enemyHPVisual;
+
     public float hpLerpSpeed = 5f; // makin tinggi, makin cepat animasinya
+
+    [Header("Chakra")]
+    public ChakraManager chakraManager;
 
     private Character player;
     private Character enemy;
@@ -117,7 +121,10 @@ public class BattleManager : MonoBehaviour
 
         SetBattleView(true); // pastikan player view aktif\
         StartCoroutine(PerformPlayerAttack());
+        chakraManager.GainChakra();
+
     }
+
 
     // === ENEMY TURN ===
     void EnemyTurn()
@@ -237,4 +244,50 @@ public class BattleManager : MonoBehaviour
         playerHPVisual = player.currentHP;
         enemyHPVisual = enemy.currentHP;
     }
+
+        // === SKILL 2: Heal + Attack ===
+    public void UseSkill2()
+    {
+        if (!playerTurn)
+        {
+            Debug.Log("Bukan giliran player!");
+            return;
+        }
+
+        if (!chakraManager.HasEnoughChakra(1))
+        {
+            Debug.Log("Chakra tidak cukup untuk Skill 2!");
+            return;
+        }
+
+        StartCoroutine(PerformSkill2());
+    }
+
+    private IEnumerator PerformSkill2()
+    {
+        chakraManager.UseChakra(1); // kurangi chakra
+
+        // ubah sprite player ke pose attack
+        if (playerSprite != null && emakAttack != null)
+            playerSprite.sprite = emakAttack;
+
+        Debug.Log("Skill 2 aktif: Emak menyembuhkan diri dan menyerang!");
+
+        // heal dulu
+        player.Heal(20); // misal heal 20 HP
+        yield return new WaitForSeconds(0.4f);
+
+        // serang musuh
+        Attack(player, enemy);
+
+        // kembali ke idle pose
+        yield return new WaitForSeconds(0.5f);
+        if (playerSprite != null && emakIdle != null)
+            playerSprite.sprite = emakIdle;
+
+        // akhiri turn
+        playerTurn = false;
+        Invoke(nameof(EnemyTurn), 1.0f);
+    }
+
 }
