@@ -1139,7 +1139,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2256948484998397059, guid: d43a022ae94ec7045b182b959b62f065, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2497,7 +2497,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 8165316572449679646, guid: de641b419ca2b684197d304d55dcb896, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2549,7 +2549,7 @@ Transform:
   m_GameObject: {fileID: 1808898049}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.6, y: 0.1654053, z: 0}
+  m_LocalPosition: {x: -2.16, y: 0.1654053, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2587,8 +2587,8 @@ MonoBehaviour:
   tanteWajanPrefab: {fileID: 5792469091724368545, guid: c245fcd7e88f1e543b3a13f2022cbcd9, type: 3}
   emakIdle: {fileID: -3475739330078262796, guid: 371cef5ecf6312f48a6998d2f12c4733, type: 3}
   emakAttack: {fileID: 6090425267115632205, guid: 56235ac19326c234ba798a18054031d1, type: 3}
-  tetanggaIdle: {fileID: 0}
-  tetanggaAttack: {fileID: -7562668644238450764, guid: e7826aea61ff7ce4eae4c4b61fd722ee, type: 3}
+  tetanggaIdle: {fileID: 8102722395974628727, guid: e0f22f93574ed3740ad8a18842f39081, type: 3}
+  tetanggaAttack: {fileID: -7237749021132264772, guid: a352babb5402d094e8c6e4adfbea5063, type: 3}
   bgPlayerTurn: {fileID: 736235957}
   bgEnemyTurn: {fileID: 391820743}
   parallaxUI: {fileID: 1980586999}
