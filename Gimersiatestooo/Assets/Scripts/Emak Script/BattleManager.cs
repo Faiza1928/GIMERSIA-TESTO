@@ -24,6 +24,10 @@ public class BattleManager : MonoBehaviour
     public Sprite emakAttack;
     public Sprite emakSkill2Pose;
 
+    [Header("Ultimate UI")]
+    public GameObject ultimateOverlay; // UI Image fullscreen
+    public Image ultimateOverlayImage; // komponen Image-nya
+
     [Header("Ultimate Sprites (4 pose)")]
     public Sprite emakUltiPose1;
     public Sprite emakUltiPose2;
@@ -377,10 +381,18 @@ public class BattleManager : MonoBehaviour
 
         Debug.Log("🔥 ULTI AKTIF! Emak mengeluarkan jurus pamungkas!");
 
-        //Pose 1
-        if (playerSprite != null && emakUltiPose1 != null)
-            playerSprite.sprite = emakUltiPose1;
-        yield return new WaitForSeconds(0.6f);
+        // === POSE 1: Fullscreen UI ===
+        if (ultimateOverlay != null)
+        {
+            ultimateOverlay.SetActive(true);
+            if (ultimateOverlayImage != null && emakUltiPose1 != null)
+                ultimateOverlayImage.sprite = emakUltiPose1;
+        }
+        yield return new WaitForSeconds(1f);
+
+            // ✅ HIDE overlay sebelum lanjut ke Pose 2-4
+        if (ultimateOverlay != null)
+            ultimateOverlay.SetActive(false);
 
         // Pose 2
         if (playerSprite != null && emakUltiPose2 != null)

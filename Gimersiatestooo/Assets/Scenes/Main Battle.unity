@@ -986,6 +986,7 @@ RectTransform:
   m_Children:
   - {fileID: 717398117}
   - {fileID: 1068649327}
+  - {fileID: 1259124167}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1423,7 +1424,7 @@ Transform:
   m_GameObject: {fileID: 813803623}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.96, y: 1.36, z: 0}
+  m_LocalPosition: {x: 10.06, y: 2.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2024,7 +2025,7 @@ Transform:
   m_GameObject: {fileID: 1067402986}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.15, y: 1.54, z: 0}
+  m_LocalPosition: {x: 13.15, y: 2.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2211,6 +2212,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231602764}
+  m_CullTransparentMesh: 1
+--- !u!1 &1259124166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1259124167}
+  - component: {fileID: 1259124169}
+  - component: {fileID: 1259124168}
+  m_Layer: 5
+  m_Name: UltimateOverlay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1259124167
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259124166}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 517115853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 17, y: -37}
+  m_SizeDelta: {x: 0, y: -316.7432}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1259124168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259124166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -2286113212006572097, guid: c76c63e49f96e3447a46532e4477ce6f, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1259124169
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259124166}
   m_CullTransparentMesh: 1
 --- !u!1 &1267929796
 GameObject:
@@ -2965,6 +3041,12 @@ MonoBehaviour:
   emakIdle: {fileID: -3475739330078262796, guid: 371cef5ecf6312f48a6998d2f12c4733, type: 3}
   emakAttack: {fileID: 6090425267115632205, guid: 56235ac19326c234ba798a18054031d1, type: 3}
   emakSkill2Pose: {fileID: 7625990093625668633, guid: 1ceb2da73cbfe634485cd157c9807ecb, type: 3}
+  ultimateOverlay: {fileID: 1259124166}
+  ultimateOverlayImage: {fileID: 1259124168}
+  emakUltiPose1: {fileID: -2286113212006572097, guid: c76c63e49f96e3447a46532e4477ce6f, type: 3}
+  emakUltiPose2: {fileID: 7862103675900966281, guid: 07370fbd32fb39945bab119955b2f970, type: 3}
+  emakUltiPose3: {fileID: -8926075757475401924, guid: d552e66c880e2864d84e918ce460827d, type: 3}
+  emakUltiPose4: {fileID: -263517714435131686, guid: 639de2646e7700f4da0b0f474b7f77ef, type: 3}
   tetanggaIdle: {fileID: 8102722395974628727, guid: e0f22f93574ed3740ad8a18842f39081, type: 3}
   tetanggaAttack: {fileID: 118335388938800075, guid: 195546bcef714e44c974b21c1166e941, type: 3}
   bgPlayerTurn: {fileID: 736235957}
