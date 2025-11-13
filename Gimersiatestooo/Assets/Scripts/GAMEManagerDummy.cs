@@ -5,18 +5,22 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public List<string> purchasedItems = new List<string>() { "Sendok Besi", "Daster Sakti" };
+    // Item dummy (boleh kosong aja sekarang)
+    public List<string> purchasedItems = new List<string>();
+
+    // Data karakter
     public string selectedCharacter;
-    public bool isSecondCharacterUnlocked = true; // ganti ke false kalau mau test karakter terkunci
+    public bool isSecondCharacterUnlocked = false; // false dulu biar Bu Sri masih terkunci
 
     void Awake()
     {
         Instance = this;
     }
 
-    // Dummy unlock biar ga error
+    // Dummy unlock biar gak error
     public void UnlockSecondCharacter()
     {
         isSecondCharacterUnlocked = true;
+        Debug.Log("Karakter kedua berhasil di-unlock (dummy).");
     }
 }

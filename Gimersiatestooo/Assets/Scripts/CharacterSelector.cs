@@ -6,9 +6,13 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class CharacterPanel
 {
-    public GameObject panel;               // Panel UI untuk karakter ini
-    public string characterName;           // Nama karakter (misal "Bu Yati")
-    public bool isUnlocked;                // Status apakah karakter terbuka
+    public GameObject panel;        // panel utama karakter (container)
+    public string characterName;
+    public bool isUnlocked;
+
+    [Header("UI State Group")]
+    public GameObject lockedGroup;  // locked
+    public GameObject unlockedGroup; // unlocked 
 }
 
 public class CharacterSelector : MonoBehaviour
@@ -26,35 +30,50 @@ public class CharacterSelector : MonoBehaviour
 
     void Start()
     {
-        // Cegah error kalau array kosong
+        
         if (characters == null || characters.Length == 0)
         {
             Debug.LogError("Array 'characters' belum diisi di Inspector!");
             return;
         }
 
-        // Update unlock status dari GameManager (kalau sudah ada)
+        // Update unlock status 
         if (GameManager.Instance != null && characters.Length > 1)
         {
             if (GameManager.Instance.isSecondCharacterUnlocked)
                 characters[1].isUnlocked = true;
         }
 
-        // Matikan semua panel dulu
+        // Matiin panel
         foreach (var c in characters)
+        {
             c.panel.SetActive(false);
+            UpdateCharacterLockState(c);
+        }
 
-        // Tampilkan karakter pertama
+        // Tampilin karakter pertama
         characters[currentIndex].panel.SetActive(true);
 
-        // Update teks item
         UpdateEquippedItemsText();
 
-        // Atur tombol navigasi
         leftButton.onClick.AddListener(PreviousCharacter);
         rightButton.onClick.AddListener(NextCharacter);
         confirmButton.onClick.AddListener(ConfirmSelection);
     }
+
+    void UpdateCharacterLockState(CharacterPanel c)
+    {
+        if (c.lockedGroup != null) c.lockedGroup.SetActive(!c.isUnlocked);
+        if (c.unlockedGroup != null) c.unlockedGroup.SetActive(c.isUnlocked);
+
+        // tombol gabisa dipencet kalo locked
+        if (c == characters[currentIndex])
+        {
+            confirmButton.interactable = c.isUnlocked;
+        }
+    }
+
+
 
     void PreviousCharacter()
     {
@@ -62,6 +81,8 @@ public class CharacterSelector : MonoBehaviour
         currentIndex--;
         if (currentIndex < 0) currentIndex = characters.Length - 1;
         characters[currentIndex].panel.SetActive(true);
+
+        UpdateCharacterLockState(characters[currentIndex]);
     }
 
     void NextCharacter()
@@ -70,22 +91,30 @@ public class CharacterSelector : MonoBehaviour
         currentIndex++;
         if (currentIndex >= characters.Length) currentIndex = 0;
         characters[currentIndex].panel.SetActive(true);
+
+        UpdateCharacterLockState(characters[currentIndex]);
     }
 
     void ConfirmSelection()
     {
         var selected = characters[currentIndex];
+
         if (!selected.isUnlocked)
         {
-            Debug.Log("Karakter masih terkunci, belum bisa dipilih!");
+            Debug.Log("Karakter ini masih terkunci dan tidak bisa dipilih!");
             return;
         }
 
         if (GameManager.Instance != null)
+        {
             GameManager.Instance.selectedCharacter = selected.characterName;
+            Debug.Log("Karakter yang dipilih: " + selected.characterName);
+        }
 
-        SceneManager.LoadScene("GameScene");
+        // Pindah ke scene gelut
+        UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
     }
+
 
     void UpdateEquippedItemsText()
     {
